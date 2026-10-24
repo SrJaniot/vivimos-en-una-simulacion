@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vivimos en una simulación</title>
+<link rel="stylesheet" href="fonts/fuentes.css">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<!-- FILTROS PARA SEPARAR CANALES EN EL GLITCH -->
+<svg width="0" height="0" style="position:absolute">
+  <filter id="f-rojo" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"/></filter>
+  <filter id="f-cian" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/></filter>
+</svg>
+
+<div id="marco">
+<div id="escenario">
+
+<!-- 1 · ANZUELO -->
+<section class="slide s-cebo" data-error="⚠ ERROR 0x5IM · presentación equivocada cargada">
+  <h1 class="cebo-titulo">¿Por qué <i>Escherichia coli</i> es la pick me de las bacterias y <i>Pseudomonas aeruginosa</i> es superior?</h1>
+  <img class="cebo-bacteria" src="img/bacteria.png" alt="">
+</section>
+
+<!-- 2 · ¿CÓMO SABES QUE ESTO ES REAL? -->
+<section class="slide s-real" data-error="⚠ ERROR 404: realidad no encontrada">
+  <h1 class="real-titulo" data-escribir="¿Cómo sabes que esto es real?"></h1>
+  <p class="real-hora"></p>
+  <div class="real-sub">¿ERES UN SIM?</div>
+</section>
+
+<!-- 3 · ESCANEANDO SIMS (CÁMARA) -->
+<section class="slide s-camara" data-error="⚠ ERROR: demasiados Sims en la sala">
+  <video class="ca-video" autoplay muted playsinline></video>
+  <canvas class="ca-capa"></canvas>
+  <div class="ca-barrido"></div>
+  <div class="ca-hud">
+    <div class="ca-titulo">ESCANEANDO SIMS<span class="ca-puntos"></span></div>
+    <div class="ca-contador">Sims detectados: <b>0</b></div>
+  </div>
+  <div class="ca-sello">CONFIRMADO: TODOS SON SIMS</div>
+  <div class="ca-sin-camara">No se detectó ninguna cámara.<br><small>Claramente esto lo diría un NPC.</small></div>
+</section>
+
+<!-- 3 · HIPÓTESIS DE LA SIMULACIÓN -->
+<section class="slide s-hipotesis" data-error="⚠ ERROR 0x5IM · textura no cargada">
+  <div class="hip-tarjeta entra" style="--d:.1s">
+    <h2>La hipótesis de la simulación</h2>
+    <div class="hip-col">
+      <img class="hip-paper" src="img/titulo-bostrom.png" alt="Are you living in a computer simulation? By Nick Bostrom">
+      <p>Plantea civilizaciones futuras lleguen a tener suficiente capacidad tecnológica para simular mentes y sociedades</p>
+      <div class="hip-flecha">⇩</div>
+      <p>Esas Civilizaciones pudieran crear muchísimas simulaciones creando otras simulaciones, podría haber muchos más observadores simulados que observadores biológicos originales</p>
+    </div>
+    <div class="hip-foto">
+      <img class="hip-bostrom" src="img/bostrom.jpg" alt="Nick Bostrom">
+      <img class="hip-gorro" src="img/gorro.png" alt="">
+    </div>
+  </div>
+  <div class="puntos-pag"><i class="on"></i><i></i><i></i><i></i></div>
+</section>
+
+<!-- 4 · UNA REALIDAD, MILLONES DE PARTIDAS -->
+<section class="slide s-partidas" data-error="⚠ ERROR: personaje fuera de límites">
+  <div class="part-cinta entra-izq">UNA REALIDAD, MILLONES DE PARTIDAS</div>
+  <div class="part-original entra" style="--d:.3s"><small>LA</small><b>ORIGINAL</b><span>solo hay una</span></div>
+  <img class="part-gato entra" style="--d:.6s" src="img/gato-carga.png" alt="">
+  <div class="part-puntos"></div>
+</section>
+
+<!-- 5 · EL MAPA SOLO SE DIBUJA ALREDEDOR TUYO -->
+<section class="slide s-tu" data-error="⚠ ERROR 0x5IM · textura no cargada">
+  <canvas class="lluvia"></canvas>
+  <div class="tu-rejilla"></div>
+</section>
+
+<!-- 6 · EL ALIEN Y SHAKIRA (CUADROS DE LA ANIMACIÓN EN img/alien/) -->
+<section class="slide s-alien" data-error="⚠ ADVERTENCIA: escena duplicada">
+  <img class="alien-cuadro" src="img/alien/c01.jpg" alt="Un alien mira en su computador a Shakira jugando Los Sims">
+</section>
+
+<!-- 7 · VIVIMOS EN UNA SIMULACIÓN -->
+<section class="slide s-sim" data-error="⚠ ERROR 404: realidad no encontrada">
+  <img class="sim-rombos" src="img/rombos.png" alt="">
+  <div class="sim-tarjeta entra" style="--d:.05s">
+    <div class="sim-vivimos">VIVIMOS EN UNA</div>
+    <img class="sim-logo" src="img/logo-simulacion.png" alt="Simulación">
+    <div class="sim-pruebas">Y tengo pruebas</div>
+    <div class="sim-barra"><i></i></div>
+    <div class="sim-cargando">Cargando realidad…</div>
+  </div>
+</section>
+
+<!-- 8 · GLITCHES -->
+<section class="slide s-glitches" data-error="⚠ ERROR 0x5IM · textura no cargada">
+  <div class="gl-titulo">GLITCHES</div>
+  <div class="gl-sub">Cuando la realidad falla como un juego</div>
+  <div class="gl-dialogo">
+    <div class="gl-dtit"><img src="img/warning.png" alt="">SE PRODUJO UN ERROR</div>
+    <p>La simulación detectó fallos en tu realidad. ¿Quieres reportarlos al jugador?</p>
+    <div class="gl-botones"><button class="btn-verde accion-siguiente">Reportar</button><button class="btn-gris gl-ignorar">Ignorar</button></div>
+  </div>
+  <i class="cuadrito" style="left:1700px;top:200px;background:#39ff7a"></i>
+  <i class="cuadrito" style="left:1745px;top:255px;width:22px;height:22px;background:#ff2bd6"></i>
+  <i class="cuadrito" style="left:200px;top:880px;background:#22e3ff"></i>
+</section>
+
+<!-- 9 · GLITCH 001–002 -->
+<section class="slide s-g12 fondo-azulverde" data-error="⚠ ERROR 0x5IM · textura no cargada">
+  <i class="linea" style="left:1160px;top:30px;width:760px;background:#2bd67b"></i>
+  <i class="linea" style="left:0;top:80px;width:1920px;background:#b04fe0;opacity:.8"></i>
+  <i class="linea" style="left:0;top:1010px;width:1020px;background:#22c6e0"></i>
+  <div class="tarjeta-g entra" style="left:128px;top:150px;width:808px;--d:.1s">
+    <div class="tg-cab"><span></span><span class="tg-err"><img src="img/warning.png" alt="">Error: escena duplicada</span></div>
+    <div class="foto tiene-foto alterna"><img src="img/dejavu.jpg" alt="Discoteca Dejavu"><img src="img/medusa.png" alt="Discoteca Medusa"></div>
+    <h3>ESCENA CARGADA DOS VECES</h3>
+    <p class="tg-nota">La misma playlist maluca</p>
+  </div>
+  <div class="tarjeta-g entra" style="left:984px;top:150px;width:808px;--d:.35s">
+    <div class="tg-cab"><span></span><span class="tg-err"><img src="img/warning.png" alt="">Modelo de personaje duplicado</span></div>
+    <div class="foto tiene-foto contiene"><img src="img/clones.jpg" alt="Avril Lavigne en 2002 y Melissa Vandella en 2004"></div>
+    <h3>CLONES</h3>
+  </div>
+</section>
+
+<!-- 10 · GLITCH 005–006 -->
+<section class="slide s-g56" data-error="⚠ ADVERTENCIA: escena duplicada">
+  <div class="tarjeta-g entra flota" style="left:140px;top:140px;width:805px;--r:-2deg;--d:.1s">
+    <div class="tg-cab"><span></span><span class="tg-err"><img src="img/warning.png" alt="">Tarea cancelada sin motivo</span></div>
+    <div class="foto tiene-foto"><img src="img/nevera.jpg" alt="Un hombre parado frente a la nevera abierta"></div>
+    <h3>ERROR DE CONTINUIDAD</h3>
+    <div class="accion-sim">
+      <div class="ac-globo">Preparar huevos con tostadas</div>
+      <button class="ac-icono" title="Cancelar acción"><span>🍳</span><i class="ac-x"></i></button>
+    </div>
+  </div>
+  <div class="tarjeta-g entra flota" style="left:990px;top:190px;width:790px;--r:2deg;--d:.35s">
+    <div class="tg-cab"><span></span><span class="tg-err"><img src="img/warning.png" alt="">Efecto Mandela</span></div>
+    <div class="foto tiene-foto alterna blanca"><img src="img/mandela-a.jpg" alt="El señor del Monopoly con monóculo"><img src="img/mandela-b.jpg" alt="El señor del Monopoly sin monóculo"></div>
+    <h3>ALGUIEN ACTUALIZÓ EL SERVIDOR</h3>
+  </div>
+</section>
+
+<!-- 11 · GLITCH 009 -->
+<section class="slide s-g9" data-error="⚠ ERROR: personaje fuera de límites">
+  <div class="g9-tarjeta entra" style="--d:.1s">
+    <div class="g9-foto"><img src="img/gato.jpg" alt="Un gato blanco y negro mirando fijo"><canvas class="g9-codigo"></canvas></div>
+    <div class="g9-texto">
+      <div class="tg-cab"><span class="tg-err"><img src="img/warning.png" alt="">Código visible para algunos personajes</span></div>
+      <h3>LOS GATOS VEN EL CÓDIGO</h3>
+      <q>¿Qué está mirando?</q>
+      <p class="g9-otros">otros personajes que pueden ver el código:</p>
+      <ul class="g9-lista"><li>Personas drogadas</li><li>Pacientes psiquiatricos con delirio magico mistico</li></ul>
+    </div>
+    <div class="drogada">
+      <div class="dr-aura"></div>
+      <span class="dr-cosa" style="--x:-170px;--y:-40px;--t:7s">🍄</span>
+      <span class="dr-cosa" style="--x:180px;--y:-90px;--t:9s">🌈</span>
+      <span class="dr-cosa" style="--x:-200px;--y:100px;--t:8s">👁️</span>
+      <span class="dr-cosa" style="--x:210px;--y:70px;--t:6s">🦋</span>
+      <span class="dr-cosa" style="--x:-80px;--y:-150px;--t:10s">🌀</span>
+      <span class="dr-cosa" style="--x:120px;--y:140px;--t:7.5s">✨</span>
+      <img class="dr-sim" src="img/drogada.png" alt="Una Sim drogada que no entiende nada">
+      <div class="dr-globo">¿?</div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · SI HAY JUEGO, HAY TRUCOS -->
+<section class="slide s-trucos fondo-celeste" data-error="⚠ ERROR 404: realidad no encontrada">
+  <img class="burbujas" src="img/burbujas.png" alt="">
+  <div class="tr-mini">SI SOMOS SIMS, ¿DÓNDE ESTÁN LOS TRUCOS?</div>
+  <h2 class="tr-titulo">Si hay juego, hay trucos</h2>
+  <div class="tr-teclas">
+    <kbd data-tecla="Control">Ctrl</kbd><span>+</span><kbd data-tecla="Shift">Shift</kbd><span>+</span><kbd data-tecla="c" class="verde">C</kbd>
+  </div>
+  <label class="tr-consola"><span>&lt;/&gt;</span><input class="consola-local" spellcheck="false" autocomplete="off" placeholder="escribe_un_truco_"></label>
+  <div class="tr-pista">Prueba: <code>motherlode</code></div>
+</section>
+
+<!-- 13 · TRUCOS 01–02 -->
+<section class="slide s-t12 fondo-celeste" data-error="⚠ ERROR 404: realidad no encontrada" data-pasos="2">
+  <div class="truco entra" style="left:130px;top:66px;--d:.05s">
+    <div class="tr-cmd" data-escribir="motherlode"></div>
+    <div class="tr-juego"><small>EN EL JUEGO →</small><b>+50.000 simoleones</b></div>
+    <div class="foto tiene-foto contiene"><img src="img/lilipink.jpg" alt="Pareja bailando frente a una tienda Lili Pink"></div>
+    <div class="tr-real paso" data-paso="1"><small>EN LA VIDA REAL</small><b>LAVAR PLATA</b><span>No todos tienen acceso a la consola :(</span></div>
+  </div>
+  <div class="truco entra" style="left:985px;top:132px;--d:.25s">
+    <div class="tr-cmd envejecer">Envejecer: <span class="interruptor"><i></i></span> <em>APAGADO</em></div>
+    <div class="tr-juego"><small>EN EL JUEGO →</small><b>Nunca cumples años</b></div>
+    <div class="foto tiene-foto contiene"><img src="img/anne.jpg" alt="Anne Hathaway en 2006 y en 2025, igualita"></div>
+    <div class="tr-real paso" data-paso="2"><small>EN LA VIDA REAL</small><b>TU TÍA DE <span class="edad">39</span></b><span>Lleva quince años así</span></div>
+  </div>
+</section>
+
+<!-- 14 · TRUCOS 03–04 -->
+<section class="slide s-t34" data-error="⚠ ERROR 0x5IM · textura no cargada" data-pasos="2">
+  <div class="truco entra" style="left:66px;top:100px;--r:-2deg;--d:.05s">
+    <div class="tr-cmd" data-escribir="sims.fill_all_commodities"></div>
+    <div class="tr-juego"><small>EN EL JUEGO →</small><b>Todas las barras al 100 %</b></div>
+    <div class="necesidades grandes"><span>Hambre</span><i></i><span>Energía</span><i></i><span>Diversión</span><i></i><span>Social</span><i></i><span>Higiene</span><i></i><span>Vejiga</span><i></i></div>
+    <div class="tr-real paso" data-paso="1"><small>EN LA VIDA REAL</small><b>PSILOCIBINAAA &lt;3</b><span>Efecto: 3 horas</span></div>
+  </div>
+  <div class="truco entra" style="left:985px;top:170px;--r:2deg;--d:.25s">
+    <div class="tr-cmd" data-escribir="resetSim"></div>
+    <div class="tr-juego"><small>EN EL JUEGO →</small><b>El NPC que se quedó pensando</b></div>
+    <div class="foto tiene-foto contiene"><img src="img/lisa.jpg" alt="Lisa Simpson mirando su plato vacío"></div>
+    <div class="tr-real paso" data-paso="2"><small>EN LA VIDA REAL</small><b>MALVIAJE</b><span>Bug: Entre mas quieres que se vaya mas dura</span></div>
+  </div>
+</section>
+
+<!-- 16 · NPC -->
+<section class="slide s-npc" data-error="⚠ FALLO DE RENDER · reintentando…">
+  <div class="npc-grande">NPC</div>
+  <div class="npc-sub">Personaje no jugable</div>
+  <p class="npc-texto">Está en la partida, pero nadie lo controla: repite su ruta, su horario y su frase.</p>
+  <p class="npc-texto npc-donde">Abundan en el Caracolí y en Cuarta etapa</p>
+  <div class="npc-sim">
+    <div class="npc-globo">Buenos días.</div>
+    <img src="img/npc.png" alt="Un Sim parado sin hacer nada">
+  </div>
+</section>
+
+<!-- 17 · MODO COMPRAR -->
+<section class="slide s-tienda" data-error="⚠ Señal del jugador perdida">
+  <div class="ti-panel entra" style="--d:.05s">
+    <div class="ti-tabs"><span class="on">Packs de objetos</span><span>Kits</span><span>Ofertas</span></div>
+    <div class="ti-fondos">Tus fondos: § <b class="ti-saldo">12</b></div>
+    <h2>Pack de objetos y expansiones</h2>
+    <div class="ti-expansiones">
+      <div class="ti-exp comprable" style="--c:#8a4fd8"><div class="ti-cab"><small>EXPANSIÓN</small>Vida en pareja</div><div class="ti-cuerpo"><span class="ti-tag">REQUIERE 2 JUGADORES</span><p>Incluye cachos</p></div></div>
+      <div class="ti-exp comprable" style="--c:#e2459a"><div class="ti-cab"><small>EXPANSIÓN</small>Mascotas</div><div class="ti-cuerpo"><span class="ti-tag">INCLUYE PELOS</span><p>Pelos gratis en toda tu ropa negra.</p></div></div>
+      <div class="ti-exp comprable" style="--c:#1c8fc0"><div class="ti-cab"><small>EXPANSIÓN</small>¡De vacaciones!</div><div class="ti-cuerpo"><span class="ti-tag">AGOTADO</span><p>Disponible en Semana Santa, al triple de precio.</p></div></div>
+    </div>
+    <div class="ti-objetos">
+      <div class="ti-obj comprable"><img src="img/marionetas.png" alt="">Marionetas</div>
+      <div class="ti-obj comprable"><img src="img/llavero.png" alt="">llavero feo</div>
+      <div class="ti-obj comprable"><img src="img/hidrante.jpg" alt="">Hidrante</div>
+    </div>
+    <div class="ti-aviso">Fondos insuficientes</div>
+  </div>
+</section>
+
+<!-- 18 · NOTAS DEL PARCHE -->
+<section class="slide s-parche" data-error="⚠ ERROR: personaje fuera de límites" data-pasos="5">
+  <div class="cintillo verde">ACTUALIZACIONES QUE NADIE PIDIÓ</div>
+  <h2 class="pa-titulo">Notas del parche: la vida <span class="pa-version">30.0</span></h2>
+  <div class="pa-panel">
+    <div class="pa-fila paso" data-paso="1"><span class="pa-tag" style="--c:#43c46b">NUEVO</span>Te da felicidad estrenar un electrodoméstico</div>
+    <div class="pa-fila paso" data-paso="2"><span class="pa-tag" style="--c:#f2b632">CAMBIO</span>Salir un viernes requiere planificación logística</div>
+    <div class="pa-fila paso" data-paso="3"><span class="pa-tag" style="--c:#e0453a">ELIMINADO</span>La capacidad de comer cualquier cosa sin consecuencias.</div>
+    <div class="pa-fila paso" data-paso="4"><span class="pa-tag" style="--c:#e2459a">ERROR CONOCIDO</span>Abres la aplicación del banco y cierras la aplicación del banco :(</div>
+    <div class="pa-fila paso" data-paso="5"><span class="pa-tag" style="--c:#2fb0da">PRÓXIMAMENTE</span>Expansión: «Declaración de renta: el jefe final»</div>
+  </div>
+  <div class="pa-instalando">Instalando actualización 30.0… <b class="pa-pct">0</b> % · no apagues tu cuerpo</div>
+  <div class="pa-barra"></div>
+</section>
+
+<!-- 19 · TERMINAL -->
+<section class="slide s-terminal" data-error="⚠ FALLO DE RENDER · reintentando…" data-pasos="1">
+  <canvas class="lluvia"></canvas>
+  <div class="te-texto">
+    <p class="te-l" data-escribir="//      NOTA DEL DESARROLLADOR"></p>
+    <p class="te-l" data-escribir="No hay ninguna prueba de que vivamos en una simulación."></p>
+    <p class="te-l" data-escribir="Pero tampoco la hay de que no."></p>
+    <p class="te-l" data-escribir="SI HOY VES ALGO RARO, NO ES TU IMAGINACIÓN. REPÓRTALO"></p>
+  </div>
+</section>
+
+<!-- CRÉDITOS -->
+<section class="slide s-creditos" data-error="⚠ Fin de la partida">
+  <div class="cr-rollo">
+    <h2>VIVIMOS EN UNA SIMULACIÓN</h2>
+    <p class="cr-sub">Una producción de la simulación</p>
+    <dl>
+      <dt>Presenta</dt><dd class="cr-nombre">Samantha</dd>
+      <dt>Idea original</dt><dd>Nick Bostrom (sin saberlo)</dd>
+      <dt>Shakira</dt><dd>como Shakira</dd>
+      <dt>El alien</dt><dd>como él mismo · shhh</dd>
+      <dt>La gata</dt><dd>Agata · viendo el código</dd>
+      <dt>La Sim drogada</dt><dd>sin entender nada</dd>
+      <dt>El NPC</dt><dd>Camilo · Buenos días.</dd>
+      <dt>Efectos especiales</dt><dd>glitches de la realidad</dd>
+      <dt>Música</dt><dd>sintetizada en tiempo real</dd>
+      <dt>Público</dt><dd>Sims sin trucos</dd>
+    </dl>
+    <div class="cr-dev">
+      <small>Desarrollo web</small>
+      <b>Esteban Janiot</b>
+      <a href="https://ejaniot.com" target="_blank" rel="noopener">ejaniot.com</a>
+    </div>
+    <p class="cr-nota">Ningún Sim fue herido durante esta presentación.</p>
+    <p class="cr-nota chica">(A algunos les quitamos la escalera de la piscina.)</p>
+    <p class="cr-gracias">GRACIAS POR JUGAR</p>
+  </div>
+</section>
+
+<!-- 21 · POST-CRÉDITOS -->
+<section class="slide s-final" data-error="⚠ Archivo de guardado dañado">
+  <div class="fi-plumbob"><svg viewBox="0 0 100 200"><polygon points="50,0 92,92 50,200 8,92" fill="url(#pb)"/><polygon points="50,0 92,92 50,110" fill="#fff" opacity=".25"/><polygon points="50,110 92,92 50,200" fill="#000" opacity=".18"/><defs><linearGradient id="pb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8ff7a"/><stop offset="1" stop-color="#1f9e3a"/></linearGradient></defs></svg></div>
+  <div class="fi-carga"><i></i></div>
+  <p class="fi-consejo"><b>CONSEJO:</b> SI HOY VES ALGO RARO, NO ES TU IMAGINACIÓN. REPÓRTALO.</p>
+  <a class="fi-dev" href="https://ejaniot.com" target="_blank" rel="noopener">Presentación web desarrollada por Esteban Janiot · <b>ejaniot.com</b></a>
+</section>
+
+<!-- CAPA DEL GLITCH -->
+<div id="capa-glitch"></div>
+
+<!-- CONSOLA DE TRUCOS (CTRL+SHIFT+C EN CUALQUIER DIAPOSITIVA) -->
+<div id="consola"><span>&gt;</span><input spellcheck="false" autocomplete="off" placeholder="escribe un truco y presiona Enter"></div>
+<div id="aviso-truco"></div>
+
+<!-- VOTACIÓN DE MANOS -->
+<div id="votacion">
+  <h4>¿Quién está seguro de que esta realidad es la original?</h4>
+  <div class="vo-fila" data-clave="antes"><span>Al inicio</span><button data-d="-1">−</button><input type="number" min="0" value="0"><button data-d="1">+</button><div class="vo-barra"><i></i></div></div>
+  <div class="vo-fila" data-clave="despues"><span>Al final</span><button data-d="-1">−</button><input type="number" min="0" value="0"><button data-d="1">+</button><div class="vo-barra"><i></i></div></div>
+  <div class="vo-resultado"></div>
+  <small>V para cerrar · el número se guarda solo</small>
+</div>
+
+<!-- AYUDA -->
+<div id="ayuda">
+  <h4>Controles</h4>
+  <dl>
+    <dt>→ · Espacio · PgDn</dt><dd>Siguiente (primero muestra lo que falte en la diapositiva)</dd>
+    <dt>Diapositiva 1</dt><dd>→ hace el cuelgue falso; cada → adelanta una fase y el pantallazo azul se queda hasta el siguiente →</dd>
+    <dt>← · PgUp</dt><dd>Anterior</dd>
+    <dt>F</dt><dd>Pantalla completa</dd>
+    <dt>M</dt><dd>Silenciar / activar sonido</dd>
+    <dt>V</dt><dd>Votación de manos</dd>
+    <dt>G</dt><dd>Glitch a voluntad</dd>
+    <dt>A</dt><dd>Mini glitches automáticos (encendidos / apagados)</dd>
+    <dt>Ctrl+Shift+C</dt><dd>Consola de trucos (motherlode, kiki, glitch, shh, crash…)</dd>
+    <dt>X</dt><dd>Caída de la simulación (pantalla azul y reinicio)</dd>
+    <dt>J</dt><dd>El jugador mueve el mouse</dd>
+    <dt>U</dt><dd>Música de fondo (encendida / apagada)</dd>
+    <dt>Clic</dt><dd>En el NPC, el gato, la Sim drogada o el alien abre el menú de Los Sims · en la 🍳 cancela la acción</dd>
+    <dt>B</dt><dd>Pantalla negra</dd>
+    <dt>Inicio · Fin</dt><dd>Primera / última</dd>
+    <dt>H</dt><dd>Esta ayuda</dd>
+  </dl>
+</div>
+
+<div id="logros"></div>
+<div id="pastel"></div>
+<div id="cursor-jugador"><svg viewBox="0 0 40 52"><path d="M3 3 L3 40 L12 31 L19 47 L26 44 L19 28 L32 28 Z" fill="#fff" stroke="#0b2350" stroke-width="3" stroke-linejoin="round"/><polygon points="31,2 36,10 31,18 26,10" fill="#5be36a" stroke="#1f7a32" stroke-width="1.5"/></svg></div>
+<div id="caida"></div>
+<div id="quipitos"></div>
+<div id="progreso"><i></i></div>
+<div id="negro"></div>
+<div id="estado"></div>
+
+</div>
+</div>
+
+<script src="libs/matter.min.js"></script>
+<script src="libs/pico.js"></script>
+<script src="libs/facefinder.js"></script>
+<script src="presentacion.js"></script>
+<script src="extras.js"></script>
+</body>
+</html>

@@ -1,0 +1,538 @@
+/* ESCENARIO FIJO DE 1920×1080 QUE SE ESCALA A LA VENTANA */
+:root{
+  --navy:#0b2350; --azul:#1c5fa8; --azul2:#2f6fd6; --verde:#2fa84f; --verde-claro:#8bef7e;
+  --magenta:#ff2bd6; --cian:#22e3ff; --neon:#39ff7a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;overflow:hidden}
+body{font-family:'M PLUS Rounded 1c','Nunito',system-ui,sans-serif;color:var(--navy)}
+body.sin-cursor,body.sin-cursor *{cursor:none!important}
+#marco{position:fixed;inset:0;display:grid;place-items:center}
+#escenario{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#000}
+
+.slide{position:absolute;inset:0;display:none;overflow:hidden}
+.slide.activa{display:block}
+.slide img{user-select:none;-webkit-user-drag:none}
+button{font:inherit;cursor:pointer;border:0}
+
+/* ENTRADAS (SE DISPARAN AL ACTIVAR LA DIAPOSITIVA) */
+@keyframes entra2{from{opacity:0;transform:translateY(60px) scale(.94) rotate(var(--r,0deg))}to{opacity:1;transform:translateY(0) scale(1) rotate(var(--r,0deg))}}
+@keyframes entraIzq{from{transform:translateX(-110%)}to{transform:none}}
+.activa .entra{animation:entra2 .8s cubic-bezier(.2,.9,.3,1.25) var(--d,0s) both}
+.activa .entra-izq{animation:entraIzq .7s cubic-bezier(.2,.9,.3,1.1) .1s both}
+.paso{opacity:0;transform:translateY(24px) scale(.96);transition:opacity .45s,transform .55s cubic-bezier(.2,.9,.3,1.4)}
+.paso.visible{opacity:1;transform:none}
+/* LOS CLONES DEL GLITCH SALTAN AL ESTADO FINAL */
+.clon *,.clon{animation-duration:0s!important;animation-delay:0s!important;transition:none!important}
+
+/* CAPA DEL GLITCH */
+#capa-glitch{position:absolute;inset:0;z-index:50;display:none;background:#000;pointer-events:none;overflow:hidden}
+#capa-glitch.on{display:block}
+#capa-glitch .gc{position:absolute;inset:0;will-change:transform}
+#capa-glitch .g-rojo{filter:url(#f-rojo);mix-blend-mode:screen}
+#capa-glitch .g-cian{filter:url(#f-cian);mix-blend-mode:screen}
+#capa-glitch .g-deco{position:absolute}
+#capa-glitch .g-lineas{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 5px);mix-blend-mode:multiply}
+.g-etiqueta,.etiqueta-error{position:absolute;left:36px;bottom:36px;z-index:3;padding:10px 22px;border:3px solid var(--magenta);background:rgba(10,8,30,.92);color:#ff9cf0;font:700 26px 'JetBrains Mono',monospace;letter-spacing:.5px;white-space:nowrap}
+.g-grande{position:absolute;inset:0;display:grid;place-items:center;z-index:4;font:900 92px 'Nunito';color:#fff;text-shadow:-6px 0 var(--magenta),6px 0 var(--cian);letter-spacing:4px}
+
+/* COMUNES */
+.cintillo{position:absolute;left:128px;top:60px;font:800 24px 'M PLUS Rounded 1c';letter-spacing:1px;color:#8bef7e}
+.cintillo.azul{color:var(--azul)} .cintillo.morado{color:#5a3fb8} .cintillo.verde{color:var(--verde-claro);top:92px}
+.pild{display:inline-block;padding:4px 18px;border-radius:99px;background:#9ef08a;color:#0b3a1e;font:800 19px 'M PLUS Rounded 1c'}
+.tg-cab{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.tg-err{display:flex;align-items:center;gap:8px;font:700 19px 'M PLUS Rounded 1c';color:#2a3a5a}
+.tg-err img{width:26px}
+.foto{position:relative;border:3px dashed #9cc3e2;border-radius:16px;background:#eef6fc;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px 30px;color:#3a5068;font:700 21px/1.55 'M PLUS Rounded 1c';overflow:hidden}
+.foto b{display:block;color:var(--azul);font-size:19px;margin-bottom:6px}
+.foto>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.foto.tiene-foto{border-style:solid;border-color:#fff;padding:0}
+.btn-verde{padding:18px 56px;border-radius:99px;background:linear-gradient(#9ef06a,#3cbf3c);color:#fff;font:800 30px 'M PLUS Rounded 1c';box-shadow:0 6px 0 #2a8a2a,0 10px 24px rgba(0,0,0,.25);text-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+.btn-verde:hover{transform:translateY(-3px) scale(1.03)}
+.btn-verde:active{transform:translateY(4px);box-shadow:0 2px 0 #2a8a2a}
+.btn-gris{padding:18px 48px;border-radius:99px;background:#e4ebf3;color:#3a5068;font:800 30px 'M PLUS Rounded 1c'}
+.puntos-pag{position:absolute;right:120px;bottom:52px;display:flex;gap:14px}
+.puntos-pag i{width:20px;height:20px;border-radius:50%;background:#7f86c4}
+.puntos-pag i.on{background:#2f74e6}
+.cuadrito{position:absolute;width:44px;height:44px;animation:titila 2.4s steps(2) infinite}
+.linea{position:absolute;height:5px;animation:barrido 6s ease-in-out infinite alternate}
+@keyframes titila{50%{opacity:.2}}
+@keyframes barrido{to{transform:translateX(-80px)}}
+.burbujas{position:absolute;inset:0;width:100%;height:100%;animation:flotaLento 9s ease-in-out infinite alternate}
+@keyframes flotaLento{to{transform:translateY(-30px)}}
+@keyframes flota{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
+
+/* 1 · ANZUELO */
+.s-cebo{background:#f1f6ee;color:#222}
+.cebo-titulo{position:absolute;left:100px;right:100px;top:80px;text-align:center;font:400 72px/1.45 Arial,sans-serif}
+.cebo-bacteria{position:absolute;left:60px;top:460px;width:1410px;transform-origin:20% 50%;animation:nada 3.5s ease-in-out infinite}
+@keyframes nada{0%,100%{transform:translateX(0) skewY(0)}50%{transform:translateX(40px) skewY(-1.2deg)}}
+
+/* 2 · ¿REAL? */
+.s-real{background:#13261a;color:#fff}
+.real-titulo{position:absolute;left:130px;top:440px;font:800 104px 'Nunito';min-height:140px}
+.real-titulo::after,.cursor::after{content:'▌';color:var(--neon);animation:titila 1s steps(2) infinite;margin-left:6px;font-weight:400}
+.real-sub{position:absolute;left:130px;bottom:58px;font:700 22px 'Nunito';letter-spacing:2px;color:#fff;opacity:0}
+.activa .real-sub{animation:subliminal 7s 3s infinite}
+@keyframes subliminal{0%,88%,100%{opacity:0}89%{opacity:.85}90%{opacity:0}92%{opacity:.6}93%{opacity:.08}}
+
+/* 3 · HIPÓTESIS */
+.s-hipotesis{background:linear-gradient(135deg,#2a2f62,#38386e 60%,#24345e)}
+.hip-tarjeta{position:absolute;left:210px;top:109px;width:1498px;height:862px;background:#fff;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.hip-tarjeta h2{position:absolute;left:72px;top:72px;font:800 42px 'M PLUS Rounded 1c';color:#14286e}
+.hip-col{position:absolute;left:80px;top:160px;width:880px;text-align:center;color:var(--azul2);font:500 27px/1.75 'M PLUS Rounded 1c'}
+.hip-paper{width:720px;margin:0 auto 34px;display:block}
+.hip-flecha{font-size:64px;color:#222;line-height:1.2;margin:4px 0}
+.activa .hip-flecha{animation:rebota 1.4s ease-in-out infinite}
+@keyframes rebota{50%{transform:translateY(12px)}}
+.hip-foto{position:absolute;left:1000px;top:64px;width:466px;height:734px;border:3px dashed #9cb4e6;border-radius:12px;padding:22px}
+.hip-foto::before{content:'';position:absolute;inset:14px;border:3px dashed #9cb4e6;border-radius:8px}
+.hip-bostrom{width:100%;height:100%;object-fit:cover;object-position:50% 20%;border-radius:6px}
+.hip-gorro{position:absolute;left:62px;top:-12px;width:420px;opacity:0;transform:translateY(-500px) rotate(-14deg)}
+.hip-gorro.cae{animation:gorro 1.1s cubic-bezier(.4,0,.6,1) both}
+@keyframes gorro{0%{opacity:1;transform:translateY(-560px) rotate(-14deg)}60%{transform:translateY(0) rotate(4deg)}75%{transform:translateY(-34px) rotate(-3deg)}88%{transform:translateY(0) rotate(1deg)}100%{opacity:1;transform:none}}
+.clon .hip-gorro.cae{opacity:1;transform:none}
+
+/* 4 · PARTIDAS */
+.s-partidas{background:#000}
+.part-cinta{position:absolute;left:0;top:68px;height:180px;width:1440px;background:#fff;clip-path:polygon(0 0,93% 0,100% 50%,93% 100%,0 100%);display:flex;align-items:center;padding-left:120px;font:900 52px 'Nunito';color:#14306e;letter-spacing:1px;white-space:nowrap}
+.part-original{position:absolute;left:142px;top:378px;width:436px;height:436px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#d6ffbf,#8be36a 55%,#3fb04a);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#156a32;box-shadow:0 0 0 0 rgba(139,227,106,.6)}
+.activa .part-original{animation:entra2 .8s cubic-bezier(.2,.9,.3,1.25) .3s both,latido 2.2s 1.2s ease-out infinite}
+@keyframes latido{0%{box-shadow:0 0 0 0 rgba(139,227,106,.55)}100%{box-shadow:0 0 0 60px rgba(139,227,106,0)}}
+.part-original small{font:800 30px 'Nunito'}
+.part-original b{font:900 76px 'Nunito';line-height:1}
+.part-original span{font:700 28px 'Nunito'}
+.part-gato{position:absolute;left:398px;top:735px;width:340px;height:345px;object-fit:cover}
+.part-puntos{position:absolute;left:775px;top:360px;width:990px;height:580px;display:grid;grid-template-columns:repeat(13,1fr);grid-template-rows:repeat(7,1fr);place-items:center}
+.part-puntos i{width:54px;height:54px;border-radius:50%;background:#d9d9d9;opacity:0;transform:scale(0)}
+.activa .part-puntos i{animation:pop .45s cubic-bezier(.2,.9,.3,1.6) var(--d) both}
+@keyframes pop{to{opacity:1;transform:scale(1)}}
+.part-puntos i.tu{background:#3fd04a;box-shadow:0 0 0 6px #fff;position:relative;z-index:2}
+.activa .part-puntos i.tu{animation:pop .45s cubic-bezier(.2,.9,.3,1.6) var(--d) both,brilloTu 1.6s 2.5s infinite}
+@keyframes brilloTu{50%{box-shadow:0 0 0 6px #fff,0 0 40px 14px rgba(63,208,74,.8)}}
+.part-puntos i.tu::after{content:'¿Estás aquí?';position:absolute;left:66px;top:50%;transform:translateY(-50%);white-space:nowrap;background:#fff;color:#14306e;border-radius:99px;padding:8px 22px;font:800 24px 'Nunito';box-shadow:0 4px 14px rgba(0,0,0,.4)}
+
+/* 5 · TÚ */
+.s-tu{background:#000 url(img/fondo-matrix.jpg) center/cover}
+.lluvia{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+.tu-rejilla{position:absolute;left:395px;top:240px;display:grid;grid-template-columns:repeat(13,80px);grid-template-rows:repeat(7,80px);gap:7px}
+.tu-rejilla i{border-radius:6px;background:#2a2a2a;transition:background .5s,transform .5s,box-shadow .5s;display:grid;place-items:center;font:900 24px 'M PLUS Rounded 1c';color:#fff}
+.tu-rejilla i.n0{background:#3fd04a;box-shadow:0 0 30px rgba(63,208,74,.9);transform:scale(1.04)}
+.tu-rejilla i.n1{background:#fff}
+.tu-rejilla i.n2{background:#c9c9c9}
+.tu-rejilla i.n3{background:#8d8d8d}
+.tu-rejilla i.n4{background:#555}
+.tu-rejilla i.n5{background:#333}
+
+/* 6 · ALIEN */
+.s-alien{background:#000}
+.alien-cuadro{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;cursor:pointer}
+.activa .alien-cuadro{animation:kenburns 30s ease-in-out infinite alternate}
+@keyframes kenburns{to{transform:scale(1.035)}}
+
+/* 7 · SIMULACIÓN */
+.s-sim{background:linear-gradient(#0b4f86 0%,#0f6f8a 45%,#25b24e 85%,#2bc649)}
+.sim-rombos{position:absolute;inset:0;width:100%;height:100%;opacity:.7;animation:flotaLento 7s ease-in-out infinite alternate}
+.sim-tarjeta{position:absolute;left:210px;top:30px;width:1486px;height:978px;background:#f4f8fb;border-radius:50px;box-shadow:0 30px 90px rgba(0,0,0,.3);text-align:center}
+.sim-vivimos{position:absolute;left:0;right:0;top:195px;font:900 118px 'Nunito';letter-spacing:-7px;color:#14306e;transform:scaleY(1.12)}
+.sim-logo{position:absolute;left:63px;top:300px;width:1360px}
+.activa .sim-logo{animation:entra2 .9s cubic-bezier(.2,.9,.3,1.4) .35s both}
+.sim-pruebas{position:absolute;left:0;right:0;top:712px;font:800 27px 'M PLUS Rounded 1c';color:var(--verde)}
+.sim-barra{position:absolute;left:541px;top:800px;width:404px;height:20px;border-radius:99px;background:#dfe8ef;overflow:hidden}
+.sim-barra i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#14906b,#3bcf4b)}
+.activa .sim-barra i{animation:carga 9s cubic-bezier(.1,.7,.2,1) .6s both}
+@keyframes carga{0%{width:0}60%{width:62%}80%{width:64%}100%{width:97%}}
+.sim-cargando{position:absolute;left:0;right:0;top:850px;font:700 21px 'M PLUS Rounded 1c';color:#14306e}
+
+/* 8 · GLITCHES */
+.s-glitches{background-color:#1e5aa0;background-image:linear-gradient(rgba(255,255,255,.07) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.07) 2px,transparent 2px);background-size:48px 48px}
+.gl-titulo{position:absolute;left:0;right:0;top:190px;text-align:center;font:900 200px 'Nunito';color:#fff;letter-spacing:6px}
+.activa .gl-titulo{animation:titGl 5s 1.5s infinite}
+@keyframes titGl{0%,93%,100%{text-shadow:none;transform:none}94%{text-shadow:-8px 0 var(--magenta),8px 0 var(--cian);transform:translateX(6px)}96%{text-shadow:6px 0 var(--magenta),-6px 0 var(--cian);transform:translateX(-4px) skewX(-6deg)}}
+.gl-sub{position:absolute;left:0;right:0;top:445px;text-align:center;font:700 42px 'M PLUS Rounded 1c';color:#e6f0ff}
+.gl-dialogo{position:absolute;left:506px;top:578px;width:908px;padding:34px 46px;background:#fff;border-radius:22px;box-shadow:0 24px 60px rgba(0,0,0,.35);opacity:0}
+.activa .gl-dialogo{animation:popDlg .5s cubic-bezier(.2,.9,.3,1.5) .9s both}
+@keyframes popDlg{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.gl-dialogo.sacude{animation:sacude .5s!important;opacity:1}
+@keyframes sacude{20%,60%{transform:translateX(-22px)}40%,80%{transform:translateX(22px)}}
+.gl-dtit{display:flex;align-items:center;gap:16px;font:800 38px 'M PLUS Rounded 1c';color:#14306e}
+.gl-dtit img{width:44px}
+.gl-dialogo p{margin:14px 0 28px;font:600 28px/1.5 'M PLUS Rounded 1c';color:var(--azul2)}
+.gl-botones{display:flex;gap:22px}
+
+/* TARJETAS DE GLITCH */
+.fondo-azulverde,.s-g12{background:linear-gradient(170deg,#0a2b6c,#0c5a78 55%,#0e8c78)}
+.s-g56{background:linear-gradient(170deg,#003640,#0b6b66)}
+.tarjeta-g{position:absolute;background:#f7fbff;border-radius:22px;padding:30px 32px 36px;box-shadow:0 26px 60px rgba(0,0,0,.35);transform:rotate(var(--r,0deg))}
+.tarjeta-g .foto{height:340px;margin:22px 0 26px}
+.tarjeta-g h3{font:800 46px/1.2 'M PLUS Rounded 1c';color:var(--navy)}
+.tarjeta-g q{display:block;margin-top:10px;font:700 30px 'M PLUS Rounded 1c';color:var(--verde)}
+q::before{content:'“'}q::after{content:'”'}
+.activa .tarjeta-g.flota{animation:entra2 .8s cubic-bezier(.2,.9,.3,1.25) var(--d) both,flota 5s calc(var(--d) + 1s) ease-in-out infinite}
+.activa .dejavu .foto{animation:dejavu 4s 2s infinite}
+@keyframes dejavu{0%,80%,100%{box-shadow:none;transform:none}82%{box-shadow:24px 0 0 rgba(47,111,214,.35);transform:translateX(-6px)}86%{box-shadow:-18px 0 0 rgba(226,69,154,.35);transform:translateX(5px)}90%{box-shadow:none;transform:none}}
+.activa .bucle h3{animation:bucle 3s 2s infinite}
+@keyframes bucle{0%,70%,100%{opacity:1}72%{opacity:.2}74%{opacity:1}76%{opacity:.3}78%{opacity:1}}
+
+/* 11 · GATO */
+.s-g9{background:#0b3a2e}
+.s-g9 .cintillo{top:58px;font-size:22px;color:#9be3b0}
+.g9-tarjeta{position:absolute;left:128px;top:144px;width:1664px;height:778px;background:#f7fbff;border-radius:30px;box-shadow:0 26px 60px rgba(0,0,0,.35);overflow:hidden}
+.g9-foto{position:absolute;left:130px;top:78px;width:342px;height:576px;border:3px dashed #9cc3e2;border-radius:16px;padding:12px}
+.g9-foto img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.g9-texto{position:absolute;left:636px;top:110px;width:900px}
+.g9-texto .tg-cab{justify-content:flex-start}
+.g9-texto h3{margin-top:24px;font:800 58px 'M PLUS Rounded 1c';color:var(--navy)}
+.g9-texto q{display:block;margin-top:12px;font:700 32px 'M PLUS Rounded 1c';color:var(--verde)}
+.g9-codigo{position:absolute;left:12px;top:12px;width:calc(100% - 24px);height:calc(100% - 24px);border-radius:8px;mix-blend-mode:screen;opacity:.75;pointer-events:none}
+
+/* 12 · TRUCOS */
+.fondo-celeste{background:linear-gradient(170deg,#dff4ff,#bfe6fa 50%,#7cc8f0)}
+.tr-mini{position:absolute;left:0;right:0;top:120px;text-align:center;font:800 22px 'M PLUS Rounded 1c';letter-spacing:1.5px;color:var(--azul)}
+.tr-titulo{position:absolute;left:0;right:0;top:170px;text-align:center;font:800 88px 'M PLUS Rounded 1c';color:var(--navy)}
+.tr-teclas{position:absolute;left:0;right:0;top:370px;display:flex;justify-content:center;align-items:center;gap:30px}
+.tr-teclas span{font:800 64px 'M PLUS Rounded 1c';color:var(--navy)}
+kbd{display:grid;place-items:center;min-width:300px;height:200px;padding:0 50px;border-radius:30px;background:linear-gradient(#fff,#e9eef3);box-shadow:0 14px 0 #b9c6d3,0 22px 40px rgba(0,0,0,.18);font:800 70px 'M PLUS Rounded 1c';color:var(--azul);transition:transform .08s,box-shadow .08s}
+kbd.verde{min-width:200px;background:linear-gradient(#a6f27c,#46c447);color:#fff;box-shadow:0 14px 0 #2a8a2a,0 22px 40px rgba(0,0,0,.18)}
+kbd.presionada{transform:translateY(12px);box-shadow:0 2px 0 #b9c6d3,0 6px 12px rgba(0,0,0,.18)}
+kbd.verde.presionada{box-shadow:0 2px 0 #2a8a2a}
+.tr-consola{position:absolute;left:460px;top:736px;width:1000px;height:132px;border-radius:99px;background:#0b1f4a;display:flex;align-items:center;gap:26px;padding:0 60px;box-shadow:0 18px 40px rgba(11,35,80,.35);cursor:text;transition:box-shadow .3s}
+.tr-consola:focus-within{box-shadow:0 0 0 8px #8bef7e,0 18px 40px rgba(11,35,80,.35)}
+.tr-consola span{font:700 34px 'JetBrains Mono';color:#8bef7e}
+.tr-consola input{flex:1;background:none;border:0;outline:0;font:700 48px 'JetBrains Mono';color:#8bef7e;caret-color:#8bef7e}
+.tr-consola input::placeholder{color:#8bef7e;opacity:.85}
+.tr-pista{position:absolute;left:0;right:0;top:900px;text-align:center;font:700 24px 'M PLUS Rounded 1c';color:#0b5a8a;opacity:0;transition:opacity .4s}
+.tr-pista.on{opacity:.8}
+.tr-pista code{font-family:'JetBrains Mono'}
+
+.s-t34{background:linear-gradient(170deg,#e3fbef,#b5eccd 55%,#7fdda6)}
+.truco{position:absolute;width:802px;height:712px;background:#fff;border-radius:30px;padding:30px;box-shadow:0 24px 60px rgba(11,35,80,.2);transform:rotate(var(--r,0deg));display:flex;flex-direction:column}
+.tr-cmd{height:72px;border-radius:99px;background:#0b1f4a;display:flex;align-items:center;padding:0 34px;font:700 32px 'JetBrains Mono';color:#8bef7e;white-space:nowrap}
+.tr-cmd::before{content:'</>';font-size:22px;margin-right:20px;opacity:.8}
+.tr-cmd.envejecer::before{content:none}
+.tr-juego{display:flex;align-items:baseline;gap:20px;margin:22px 4px 18px}
+.tr-juego small{font:800 20px 'M PLUS Rounded 1c';color:var(--azul)}
+.tr-juego b{font:800 30px 'M PLUS Rounded 1c';color:var(--navy)}
+.truco .foto{flex:1;min-height:0}
+.truco .foto.bajita{flex:.75}
+.tr-real{margin-top:20px;border-radius:20px;padding:20px 30px;background:linear-gradient(#8ee870,#3dbb48);color:#fff;box-shadow:0 8px 0 #2a8a3a}
+.tr-real small{display:block;font:800 19px 'M PLUS Rounded 1c';color:#0b3a1e}
+.tr-real b{display:block;font:900 50px/1.15 'M PLUS Rounded 1c';text-shadow:0 2px 0 rgba(0,0,0,.15)}
+.tr-real span{display:block;margin-top:4px;font:700 20px 'M PLUS Rounded 1c';color:#0b3a1e}
+.tr-real.paso{transform:translateY(30px) scale(.9);transform-origin:50% 100%}
+.tr-real.paso.visible{transform:none}
+.necesidades{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:10px 18px;align-items:center;margin:0 6px 18px;font:800 20px 'M PLUS Rounded 1c';color:#3a5068}
+.necesidades i{height:16px;border-radius:99px;background:#e1e8ef;position:relative;overflow:hidden}
+.necesidades i::after{content:'';position:absolute;inset:0;width:var(--v,20%);background:linear-gradient(90deg,#e0453a,#f2b632);border-radius:99px;transition:width 1.4s cubic-bezier(.2,.9,.3,1),background 1.4s}
+.necesidades.llenas i::after{width:100%;background:linear-gradient(90deg,#3dbb48,#8ee870)}
+.fila-truco{position:absolute;left:121px;width:1671px;height:378px;background:#fff;border-radius:30px;padding:26px;box-shadow:0 24px 60px rgba(60,40,140,.2);display:grid;grid-template-columns:420px 1fr 640px;gap:30px;align-items:center}
+.fila-truco .foto{height:100%;font-size:19px}
+.fila-truco .tr-real{margin:0;height:100%;display:flex;flex-direction:column;justify-content:center}
+.fila-truco .tr-real b{font-size:46px}
+.ft-medio .tr-cmd{font-size:28px}
+.ft-medio .tr-juego{flex-direction:column;align-items:flex-start;gap:6px}
+.interruptor{display:inline-block;width:76px;height:40px;border-radius:99px;background:#43c46b;margin:0 14px;position:relative;transition:background .4s}
+.interruptor i{position:absolute;top:5px;left:41px;width:30px;height:30px;border-radius:50%;background:#fff;transition:left .4s}
+.interruptor.apagado{background:#e0453a}
+.interruptor.apagado i{left:5px}
+.envejecer em{font-style:normal;color:#ff8a8a}
+
+/* 16 · NPC */
+.s-npc{background:linear-gradient(160deg,#ffa585,#ff8f6e)}
+.npc-grande{position:absolute;left:118px;top:200px;font:900 360px/1 'Nunito';color:#fff;letter-spacing:-6px}
+.npc-sub{position:absolute;left:128px;top:600px;font:800 54px 'M PLUS Rounded 1c';color:#3a160c}
+.npc-texto{position:absolute;left:128px;top:690px;width:1000px;font:700 32px/1.55 'M PLUS Rounded 1c';color:#3a160c}
+.npc-sim{position:absolute;left:1150px;top:40px;width:640px;height:1020px}
+.npc-sim img{position:absolute;left:0;top:0;height:1020px;transform-origin:50% 100%}
+.activa .npc-sim img{animation:respira 3.2s ease-in-out infinite,ruta 12s ease-in-out infinite}
+@keyframes respira{50%{transform:scaleY(1.012) translateY(-4px)}}
+@keyframes ruta{0%,40%{left:0}50%,90%{left:-60px}100%{left:0}}
+.npc-globo{position:absolute;right:390px;top:110px;z-index:2;background:#fff;color:#3a160c;font:800 32px 'M PLUS Rounded 1c';padding:18px 30px;border-radius:26px;box-shadow:0 10px 26px rgba(0,0,0,.2);white-space:nowrap;transition:opacity .25s,transform .25s}
+.npc-globo::after{content:'';position:absolute;right:40px;bottom:-20px;border:12px solid transparent;border-top:14px solid #fff}
+.npc-globo.oculto{opacity:0;transform:translateY(10px) scale(.9)}
+
+/* 17 · TIENDA */
+.s-tienda{background:#0e4c92}
+.ti-panel{position:absolute;left:91px;top:42px;width:1739px;height:990px;background:#fff;border-radius:26px;padding:62px 46px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.ti-tabs{display:flex;gap:16px}
+.ti-tabs span{padding:8px 26px;border-radius:99px;background:#e2ecf8;font:800 22px 'M PLUS Rounded 1c';color:var(--azul)}
+.ti-tabs span.on{background:var(--azul);color:#fff}
+.ti-fondos{position:absolute;right:66px;top:66px;font:800 28px 'M PLUS Rounded 1c';color:var(--verde)}
+.ti-panel h2{margin:30px 0 40px;font:800 50px 'M PLUS Rounded 1c';color:var(--navy)}
+.ti-expansiones{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.ti-exp{border-radius:18px;overflow:hidden;box-shadow:0 10px 28px rgba(11,35,80,.15);background:#fff;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.ti-exp:hover,.ti-obj:hover{transform:translateY(-10px);box-shadow:0 24px 40px rgba(11,35,80,.25)}
+.ti-cab{background:var(--c);color:#fff;padding:20px 30px;font:800 38px 'M PLUS Rounded 1c'}
+.ti-cab small{display:block;font-size:18px;opacity:.9}
+.ti-cuerpo{padding:22px 30px 30px}
+.ti-tag{display:inline-block;padding:3px 18px;border:3px solid var(--c);border-radius:99px;color:var(--c);font:800 19px 'M PLUS Rounded 1c'}
+.ti-cuerpo p{margin-top:16px;font:700 26px/1.45 'M PLUS Rounded 1c';color:var(--navy)}
+.ti-objetos{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:30px}
+.ti-obj{display:flex;align-items:center;gap:40px;padding:16px;border:2px solid #dfe8f2;border-radius:16px;font:800 30px 'M PLUS Rounded 1c';color:var(--navy);cursor:pointer;transition:transform .25s,box-shadow .25s;background:#f8fbff}
+.ti-obj img{width:200px;height:200px;object-fit:cover;border-radius:10px}
+.ti-aviso{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.6);padding:30px 60px;border-radius:22px;background:#e0453a;color:#fff;font:900 48px 'M PLUS Rounded 1c';box-shadow:0 20px 50px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s,transform .3s cubic-bezier(.2,.9,.3,1.5)}
+.ti-aviso.on{opacity:1;transform:translate(-50%,-50%)}
+
+/* 18 · PARCHE */
+.s-parche{background:#0b1938;color:#fff}
+.pa-titulo{position:absolute;left:128px;top:142px;font:800 76px 'M PLUS Rounded 1c'}
+.pa-panel{position:absolute;left:121px;top:290px;width:1671px;padding:30px 40px;border-radius:24px;background:#13285a;border:2px solid #24407e}
+.pa-fila{display:flex;align-items:center;gap:36px;height:80px;font:700 38px 'M PLUS Rounded 1c'}
+.pa-tag{width:290px;flex:none;text-align:center;padding:8px 0;border-radius:10px;background:var(--c);font:800 20px 'M PLUS Rounded 1c';letter-spacing:1px;color:#0b1838}
+.pa-instalando{position:absolute;left:128px;top:840px;font:600 24px 'M PLUS Rounded 1c';color:#bfd0ff}
+.pa-barra{position:absolute;left:128px;top:892px;display:flex;gap:8px}
+.pa-barra i{width:58px;height:42px;border-radius:6px;background:#1e2e5a}
+.pa-barra i.on{background:#43c46b;box-shadow:0 0 14px rgba(67,196,107,.5)}
+.pa-barra i.trabada{animation:titila .8s steps(2) infinite}
+
+/* 19 · TERMINAL */
+.s-terminal{background:#000 url(img/fondo-terminal.jpg) center/cover}
+.s-terminal .lluvia{opacity:.35;mix-blend-mode:screen}
+.te-texto{position:absolute;left:215px;top:222px;width:820px;font:400 31px/1.45 'JetBrains Mono';color:#4ce06a;text-shadow:0 0 10px rgba(76,224,106,.6)}
+.te-l{min-height:45px;margin-bottom:62px;white-space:pre-wrap}
+.te-l:first-child{margin-bottom:84px}
+
+/* 21 · FINAL */
+.s-final{background:#263a63;color:#fff}
+.fi-plumbob{position:absolute;left:50%;top:230px;width:150px;height:300px;margin-left:-75px;perspective:600px}
+.fi-plumbob svg{width:100%;height:100%;filter:drop-shadow(0 0 30px rgba(139,239,126,.6));animation:gira 3.5s linear infinite}
+@keyframes gira{0%{transform:rotateY(0) translateY(0)}50%{transform:rotateY(180deg) translateY(-20px)}100%{transform:rotateY(360deg) translateY(0)}}
+.fi-carga{position:absolute;left:660px;top:640px;width:600px;height:12px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.fi-carga i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3fb04a,#8bef7e)}
+.activa .fi-carga i{animation:cargaLenta 40s cubic-bezier(.1,.6,.2,1) .5s both}
+@keyframes cargaLenta{to{width:93%}}
+.fi-consejo{position:absolute;left:300px;right:300px;top:760px;text-align:center;font:800 46px/1.6 'M PLUS Rounded 1c';opacity:0}
+.activa .fi-consejo{animation:aparece 1.5s 2.5s both}
+@keyframes aparece{from{opacity:0}to{opacity:1}}
+.fi-consejo b{color:var(--verde-claro)}
+
+/* CONSOLA GLOBAL DE TRUCOS */
+#consola{position:absolute;left:40px;top:40px;width:900px;z-index:60;display:none;align-items:center;gap:14px;padding:14px 26px;border-radius:12px;background:rgba(8,20,44,.94);border:2px solid #8bef7e;box-shadow:0 18px 40px rgba(0,0,0,.4)}
+#consola.on{display:flex}
+#consola span{font:700 32px 'JetBrains Mono';color:#8bef7e}
+#consola input{flex:1;background:none;border:0;outline:0;font:700 34px 'JetBrains Mono';color:#8bef7e;caret-color:#8bef7e}
+#consola input::placeholder{color:#8bef7e;opacity:.5}
+#aviso-truco{position:absolute;left:50%;top:60px;z-index:61;transform:translate(-50%,-30px);padding:18px 40px;border-radius:99px;background:#0b1f4a;color:#8bef7e;font:700 34px 'JetBrains Mono';box-shadow:0 14px 40px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .3s,transform .4s cubic-bezier(.2,.9,.3,1.5);white-space:nowrap}
+#aviso-truco.on{opacity:1;transform:translate(-50%,0)}
+#aviso-truco.mal{color:#ff9c9c}
+
+/* VOTACIÓN */
+#votacion{position:absolute;right:40px;bottom:40px;z-index:70;width:760px;padding:30px 36px;border-radius:24px;background:rgba(8,20,44,.95);border:2px solid #2a4a8a;color:#fff;display:none;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#votacion.on{display:block}
+#votacion h4{font:800 28px/1.3 'M PLUS Rounded 1c';margin-bottom:20px}
+.vo-fila{display:grid;grid-template-columns:150px 54px 110px 54px 1fr;align-items:center;gap:12px;margin:14px 0}
+.vo-fila span{font:700 24px 'M PLUS Rounded 1c';color:#bfd0ff}
+.vo-fila button{height:54px;border-radius:12px;background:#1e3a72;color:#fff;font:800 32px 'M PLUS Rounded 1c'}
+.vo-fila input{height:54px;border-radius:12px;border:0;background:#0b1f4a;color:#8bef7e;text-align:center;font:800 32px 'JetBrains Mono';-moz-appearance:textfield}
+.vo-fila input::-webkit-inner-spin-button{display:none}
+.vo-barra{height:22px;border-radius:99px;background:#13285a;overflow:hidden}
+.vo-barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3fb04a,#8bef7e);transition:width .5s}
+.vo-fila[data-clave=despues] .vo-barra i{background:linear-gradient(90deg,#e2459a,#ff8ad8)}
+.vo-resultado{min-height:40px;margin-top:10px;font:800 28px 'M PLUS Rounded 1c';color:#8bef7e}
+#votacion small{font:600 18px 'M PLUS Rounded 1c';color:#7f93c4}
+
+/* AYUDA, PROGRESO, NEGRO */
+#ayuda{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:80;width:1100px;padding:44px 56px;border-radius:24px;background:rgba(8,20,44,.96);border:2px solid #2a4a8a;color:#fff;display:none}
+#ayuda.on{display:block}
+#ayuda h4{font:800 40px 'M PLUS Rounded 1c';margin-bottom:24px;color:#8bef7e}
+#ayuda dl{display:grid;grid-template-columns:300px 1fr;gap:12px 24px;font:600 26px 'M PLUS Rounded 1c'}
+#ayuda dt{font-family:'JetBrains Mono';color:#bfd0ff}
+#progreso{position:absolute;left:0;right:0;bottom:0;height:6px;z-index:40;background:rgba(0,0,0,.15)}
+#progreso i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cian),var(--neon));transition:width .5s}
+#negro{position:absolute;inset:0;z-index:90;background:#000;display:none}
+#negro.on{display:block}
+#estado{position:absolute;right:40px;top:40px;z-index:85;padding:12px 26px;border-radius:12px;background:rgba(8,20,44,.9);color:#8bef7e;font:700 26px 'JetBrains Mono';opacity:0;transition:opacity .3s;pointer-events:none}
+#estado.on{opacity:1}
+.tr-real b .edad{display:inline;font:inherit;color:inherit;margin:0}
+
+/* ============ EXTRAS ============ */
+
+/* 2 · HORA REAL */
+.real-hora{position:absolute;left:134px;top:600px;font:600 40px 'Nunito';color:#9fb8a6;min-height:56px}
+.real-seguro{color:#ff7a7a;font-weight:800}
+
+/* 3 · ESCANEANDO SIMS */
+.s-camara{background:#020806}
+.ca-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);filter:saturate(.75) contrast(1.1) brightness(.9)}
+.ca-capa{position:absolute;inset:0;width:100%;height:100%}
+.s-camara::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 2px,transparent 2px 5px),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65))}
+.ca-barrido{position:absolute;left:0;right:0;height:120px;top:-120px;background:linear-gradient(transparent,rgba(57,255,122,.28),transparent);border-bottom:3px solid rgba(57,255,122,.8)}
+.activa .ca-barrido{animation:barreCam 2.6s linear infinite}
+@keyframes barreCam{to{top:1080px}}
+.ca-hud{position:absolute;left:60px;top:50px;z-index:2;font-family:'JetBrains Mono';color:#5bff8a;text-shadow:0 0 12px rgba(57,255,122,.7)}
+.ca-titulo{font-weight:700;font-size:58px;letter-spacing:4px}
+.ca-contador{margin-top:10px;font-size:32px}
+.ca-sello{position:absolute;left:50%;top:50%;z-index:3;padding:26px 56px;border:8px solid #ff2bd6;border-radius:18px;color:#ff2bd6;background:rgba(10,0,20,.55);font:900 78px 'Nunito';letter-spacing:3px;white-space:nowrap;transform:translate(-50%,-50%) rotate(-8deg) scale(3);opacity:0;pointer-events:none}
+.ca-sello.on{animation:sello .45s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes sello{to{opacity:1;transform:translate(-50%,-50%) rotate(-8deg) scale(1)}}
+.ca-sin-camara{position:absolute;inset:0;display:none;place-items:center;text-align:center;font:800 64px/1.4 'M PLUS Rounded 1c';color:#fff}
+.ca-sin-camara small{font-size:38px;color:#9fb8a6}
+.s-camara.sin-camara .ca-sin-camara{display:grid}
+
+/* CRÉDITOS */
+.s-creditos{background:#000;color:#fff}
+.cr-rollo{position:absolute;left:0;right:0;top:1100px;text-align:center}
+.activa .cr-rollo{animation:creditos 34s linear .6s forwards}
+@keyframes creditos{to{transform:translateY(var(--fin,-2650px))}}
+.cr-rollo h2{font:900 92px 'Nunito';letter-spacing:2px;color:#8bef7e}
+.cr-sub{margin:16px 0 120px;font:600 38px 'M PLUS Rounded 1c';color:#bfd0ff}
+.cr-rollo dl{display:grid;grid-template-columns:1fr 1fr;gap:34px 50px;width:1300px;margin:0 auto}
+.cr-rollo dt{text-align:right;font:600 36px 'M PLUS Rounded 1c';color:#9fb0d0}
+.cr-rollo dd{text-align:left;font:800 42px 'M PLUS Rounded 1c'}
+.cr-nota{margin-top:200px;font:700 42px 'M PLUS Rounded 1c'}
+.cr-nota.chica{margin-top:18px;font-size:32px;color:#9fb0d0}
+.cr-gracias{margin-top:300px;font:900 110px 'Nunito';letter-spacing:6px;color:#fff;text-shadow:-5px 0 #ff2bd6,5px 0 #22e3ff}
+
+/* LOGROS */
+#logros{position:absolute;right:40px;top:40px;z-index:72;display:flex;flex-direction:column;gap:16px;pointer-events:none}
+.logro{display:flex;align-items:center;gap:22px;width:640px;padding:18px 26px 18px 18px;border-radius:99px;background:linear-gradient(90deg,#0b1f4a,#13285a);border:3px solid #8bef7e;box-shadow:0 14px 40px rgba(0,0,0,.5);color:#fff;animation:logroEntra .6s cubic-bezier(.2,.9,.3,1.3) both}
+.logro.sale{animation:logroSale .5s ease-in forwards}
+@keyframes logroEntra{from{transform:translateX(120%)}to{transform:none}}
+@keyframes logroSale{to{transform:translateX(120%);opacity:0}}
+.logro i{flex:none;width:86px;height:86px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#d6ffbf,#3fb04a);display:grid;place-items:center;font:normal 46px sans-serif;box-shadow:0 0 24px rgba(139,239,126,.7)}
+.logro small{display:block;font:800 18px 'M PLUS Rounded 1c';letter-spacing:2px;color:#8bef7e}
+.logro b{display:block;font:800 30px/1.2 'M PLUS Rounded 1c'}
+.logro span{display:block;font:600 20px 'M PLUS Rounded 1c';color:#bfd0ff}
+
+/* MENÚ CIRCULAR */
+#pastel{position:absolute;inset:0;z-index:74;display:none}
+#pastel.on{display:block}
+.pa-centro{position:absolute;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#cfe3ff);border:4px solid #1c5fa8;display:grid;place-items:center;font-size:44px;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:popDlg .3s cubic-bezier(.2,.9,.3,1.6) both}
+.pa-opcion{position:absolute;translate:-50% -50%;padding:14px 30px;border-radius:99px;background:linear-gradient(#ffffff,#dbe9fb);border:3px solid #1c5fa8;color:#0b2350;font:800 28px 'M PLUS Rounded 1c';white-space:nowrap;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.35);animation:popDlg .35s cubic-bezier(.2,.9,.3,1.5) both}
+.pa-opcion:hover,.pa-opcion.hover{background:linear-gradient(#a6f27c,#46c447);color:#fff;border-color:#2a8a2a}
+.pa-reaccion{position:absolute;translate:-50% -100%;padding:16px 30px;border-radius:24px;background:#fff;color:#0b2350;font:800 32px 'M PLUS Rounded 1c';box-shadow:0 10px 30px rgba(0,0,0,.35);white-space:nowrap;z-index:74;pointer-events:none;animation:popDlg .3s cubic-bezier(.2,.9,.3,1.6) both}
+.npc-sim img,.g9-foto img,.alien-cuadro{cursor:pointer}
+.npc-sim.despedido{transition:transform 1.2s cubic-bezier(.6,0,.4,1);transform:translateX(900px)}
+
+/* CURSOR DEL JUGADOR */
+#cursor-jugador{position:absolute;left:0;top:0;z-index:76;width:56px;height:72px;pointer-events:none;opacity:0;transition:opacity .3s;filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))}
+#cursor-jugador.on{opacity:1}
+#cursor-jugador svg{width:100%;height:100%}
+#cursor-jugador.clic svg{transform:scale(.8);transition:transform .08s}
+
+/* CAÍDA DE LA SIMULACIÓN */
+#caida{position:absolute;inset:0;z-index:95;display:none;background:#0a64c8;color:#fff;font-family:'Segoe UI','Nunito',sans-serif}
+#caida.on{display:block}
+#caida .bs{position:absolute;left:220px;top:180px;width:1400px}
+#caida .bs-cara{font-size:200px;line-height:1}
+#caida .bs-txt{margin-top:50px;font-size:46px;line-height:1.4;font-weight:300}
+#caida .bs-pct{margin-top:46px;font-size:46px;font-weight:300}
+#caida .bs-pie{display:flex;gap:40px;margin-top:60px;align-items:center}
+#caida .bs-pie canvas{width:170px;height:170px;background:#fff}
+#caida .bs-pie p{font-size:26px;line-height:1.6;font-weight:300}
+#caida .bs-pie b{font-weight:600}
+#caida.reinicio{background:#000}
+#caida.win{background:#0078d7}
+#caida .rein{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:40px;font:700 44px 'M PLUS Rounded 1c';color:#8bef7e}
+#caida .rein svg{width:110px;height:220px;animation:gira 1.6s linear infinite;filter:drop-shadow(0 0 30px rgba(139,239,126,.7))}
+
+/* GRAVEDAD */
+.fisica{position:absolute!important;margin:0!important;transform-origin:50% 50%;will-change:transform;z-index:5}
+.s-terminal.temblor{animation:temblor .12s linear infinite}
+@keyframes temblor{25%{transform:translate(6px,-4px)}50%{transform:translate(-5px,3px)}75%{transform:translate(3px,5px)}}
+
+/* ============ CAMBIOS DEL 24/10 (ESTA.pptx) ============ */
+
+/* FOTOS QUE CAMBIAN SOLAS (DEJAVU ↔ MEDUSA, MONOPOLY CON Y SIN MONÓCULO) */
+.s-g12 .tarjeta-g .foto{height:470px}
+.tg-nota{margin-top:10px;font:700 32px 'M PLUS Rounded 1c';color:var(--verde)}
+.foto.alterna img:nth-child(2){opacity:0}
+.foto.alterna.b img:nth-child(2){opacity:1}
+.foto.blanca,.foto.contiene{background:#fff;border:0}
+.foto.blanca img,.foto.contiene img{object-fit:contain;background:#fff}
+.foto.salto{animation:saltoFoto .4s steps(5)}
+@keyframes saltoFoto{
+  0%{transform:translateX(-14px);filter:hue-rotate(90deg) saturate(3) contrast(1.6)}
+  25%{transform:translateX(18px) skewX(-8deg);filter:invert(1)}
+  50%{transform:translateX(-8px);filter:hue-rotate(-90deg) saturate(4)}
+  75%{transform:translateX(6px) skewX(5deg);filter:brightness(1.8)}
+  100%{transform:none;filter:none}}
+
+/* NEVERA: ACCIÓN DEL SIM QUE SE CANCELA */
+.s-g56 .tarjeta-g .foto{height:330px}
+.accion-sim{position:relative;height:150px;margin-top:12px;transition:opacity .35s,transform .45s cubic-bezier(.6,-0.4,.7,1)}
+.accion-sim.oculta{opacity:0;transform:translateY(16px) scale(.6);transform-origin:70px 110px}
+.accion-sim.fuera{opacity:0;transform:translate(-30px,40px) scale(.2);transform-origin:70px 110px}
+.ac-globo{position:absolute;left:10px;top:0;padding:10px 24px;border-radius:12px;background:linear-gradient(#fff,#e8edf3);border:2px solid #b5bfca;box-shadow:0 4px 10px rgba(0,0,0,.18);font:800 28px 'Nunito','M PLUS Rounded 1c';color:#0b3fb0;white-space:nowrap}
+.ac-globo::after{content:'';position:absolute;left:48px;bottom:-16px;border:9px solid transparent;border-top:14px solid #e8edf3}
+.ac-icono{position:absolute;left:24px;top:68px;width:84px;height:84px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#ffffff,#d3dae2 60%,#9aa6b3);border:3px solid #fff;box-shadow:0 0 0 2px #9aa6b3,0 6px 14px rgba(0,0,0,.3);display:grid;place-items:center;font-size:44px;line-height:1;padding:0;transition:transform .15s}
+.ac-icono:hover{transform:scale(1.08)}
+.ac-icono span{transition:filter .3s,opacity .3s}
+.ac-x{position:absolute;inset:14px;transform:scale(0) rotate(-90deg);transition:transform .25s cubic-bezier(.2,.9,.3,1.6)}
+.ac-x::before,.ac-x::after{content:'';position:absolute;left:50%;top:-4px;bottom:-4px;width:9px;margin-left:-4.5px;border-radius:9px;background:#e0302a;box-shadow:0 0 0 2px #fff;transform:rotate(45deg)}
+.ac-x::after{transform:rotate(-45deg)}
+.accion-sim.cancelada .ac-x{transform:none}
+.accion-sim.cancelada .ac-icono span{filter:grayscale(1);opacity:.6}
+.accion-sim.cancelada .ac-globo{text-decoration:line-through;color:#7a8696}
+.ac-duda{position:absolute;right:16%;top:6%;width:84px;height:84px;border-radius:50%;background:#fff;color:#0b3fb0;font:900 60px/84px 'Nunito';text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.35);animation:popDlg .35s cubic-bezier(.2,.9,.3,1.8) both;z-index:2}
+
+/* GATA Y SIM DROGADA */
+.g9-otros{margin-top:34px;font:700 24px 'M PLUS Rounded 1c';color:#2a3a5a}
+.g9-lista{margin-top:6px;list-style:none;font:800 32px/1.5 'M PLUS Rounded 1c';color:var(--verde)}
+.g9-lista li{display:flex;align-items:center;gap:18px}
+.g9-lista li::before{content:'';flex:none;width:22px;height:22px;border-radius:50%;background:var(--verde)}
+.g9-texto{width:980px;z-index:2}
+.drogada{position:absolute;left:1190px;top:462px;width:310px;height:310px}
+.dr-aura{position:absolute;left:50%;top:50%;width:400px;height:400px;margin:-200px 0 0 -200px;border-radius:50%;background:conic-gradient(#ff2bd6,#ffd02b,#39ff7a,#22e3ff,#8a4fd8,#ff2bd6);filter:blur(30px);opacity:.5;pointer-events:none}
+.dr-aura::after{content:'';position:absolute;inset:60px;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.6) 0 9deg,transparent 9deg 18deg)}
+.activa .dr-aura{animation:drGira 7s linear infinite,drLatido 2.3s ease-in-out infinite}
+.activa .dr-aura::after{animation:drGira 2.5s linear infinite reverse}
+@keyframes drGira{to{rotate:360deg}}
+@keyframes drLatido{50%{scale:1.18;opacity:.75}}
+.dr-sim{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform-origin:50% 95%;cursor:pointer}
+.activa .dr-sim{animation:drMareo 3.6s ease-in-out infinite,drColor 5s linear infinite}
+@keyframes drMareo{0%,100%{transform:rotate(-5deg) translateX(-8px)}25%{transform:rotate(1deg) translateY(-6px)}50%{transform:rotate(5deg) translateX(8px)}75%{transform:rotate(-1deg) translateY(-3px)}}
+@keyframes drColor{0%,100%{filter:hue-rotate(0deg) saturate(1.2) drop-shadow(0 0 14px #ff2bd6)}33%{filter:hue-rotate(35deg) saturate(1.6) drop-shadow(0 0 18px #39ff7a)}66%{filter:hue-rotate(-35deg) saturate(1.6) drop-shadow(0 0 18px #22e3ff)}}
+.dr-cosa{position:absolute;left:50%;top:45%;margin:-28px 0 0 -28px;font:46px/1 'Segoe UI Emoji',sans-serif;pointer-events:none;opacity:0}
+.activa .dr-cosa{animation:drFlota var(--t) ease-in-out infinite}
+@keyframes drFlota{0%,100%{transform:translate(calc(var(--x) * .5),calc(var(--y) * .5)) rotate(0deg) scale(.7);opacity:.25;filter:hue-rotate(0deg)}50%{transform:translate(var(--x),var(--y)) rotate(220deg) scale(1.3);opacity:1;filter:hue-rotate(180deg)}}
+.dr-globo{position:absolute;right:270px;top:40px;z-index:2;padding:10px 24px;border-radius:30px;background:#fff;color:#8a4fd8;font:800 28px 'M PLUS Rounded 1c';white-space:nowrap;box-shadow:0 8px 22px rgba(0,0,0,.25);transition:opacity .25s,transform .25s}
+.dr-globo::after{content:'';position:absolute;right:-10px;bottom:-6px;width:22px;height:22px;border-radius:50%;background:#fff}
+.dr-globo.oculto{opacity:0;transform:scale(.8)}
+.activa .dr-globo{animation:drGlobo 2.8s ease-in-out infinite}
+@keyframes drGlobo{50%{translate:6px -8px;rotate:-3deg}}
+
+/* TRUCOS CON LAS FOTOS NUEVAS */
+.s-t12 .truco{height:890px}
+.s-t34 .truco:first-child{height:720px}
+.s-t34 .truco:last-child{height:860px}
+.necesidades.grandes{flex:1;align-content:center;gap:34px 22px;font-size:28px}
+.necesidades.grandes i{height:28px}
+
+/* NPC */
+.npc-donde{top:860px}
+
+/* CRÉDITOS · DESARROLLADOR */
+.cr-dev{margin-top:170px}
+.cr-dev small{display:block;font:600 36px 'M PLUS Rounded 1c';color:#9fb0d0}
+.cr-dev b{display:block;margin-top:8px;font:900 72px 'Nunito';color:#8bef7e}
+.cr-dev a{display:inline-block;margin-top:16px;font:700 46px 'JetBrains Mono';color:#22e3ff;text-decoration:none;border-bottom:4px solid #22e3ff}
+.fi-dev{position:absolute;left:0;right:0;bottom:56px;text-align:center;font:700 28px 'M PLUS Rounded 1c';color:#bfd0ff;text-decoration:none;opacity:0}
+.fi-dev b{color:#22e3ff}
+.activa .fi-dev{animation:aparece 1.5s 4s both}
+
+/* LLUVIA DE QUIPITOS (TRUCO «kiki») */
+#quipitos{position:absolute;inset:0;z-index:58;pointer-events:none;overflow:hidden}
+#quipitos img{position:absolute;left:0;top:0;will-change:transform;filter:drop-shadow(0 8px 10px rgba(0,0,0,.35))}
+
+/* GRAVEDAD EN LA TERMINAL (CADA PALABRA ES UN CUERPO) */
+.te-l .pz{display:inline-block;white-space:pre}
+
+/* ANZUELO QUE SE TRABA ANTES DEL PANTALLAZO AZUL */
+.s-cebo.trabado *{animation-play-state:paused!important}
+.cb-velo{position:absolute;inset:0;z-index:5;background:rgba(255,255,255,0);transition:background 1.6s;pointer-events:none}
+.cb-velo.on{background:rgba(255,255,255,.55)}
+.cb-barra{position:absolute;left:0;right:0;top:0;z-index:6;height:62px;display:flex;align-items:center;gap:16px;padding:0 0 0 22px;background:#fff;border-bottom:1px solid #c8c8c8;font:400 26px 'Segoe UI',sans-serif;color:#1b1b1b;transform:translateY(-100%);transition:transform .25s}
+.cb-barra.on{transform:none}
+.cb-barra .cb-btns{margin-left:auto;display:flex;height:100%}
+.cb-barra .cb-btns span{width:92px;display:grid;place-items:center;font-size:24px}
+.cb-barra .cb-btns span:last-child{background:#e81123;color:#fff}
+.cb-rastro{position:absolute;z-index:1;pointer-events:none}
+.cb-giro{position:absolute;z-index:8;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:6px solid rgba(0,120,215,.12);border-top-color:#0078d7;border-right-color:#0078d7;animation:drGira .8s linear infinite;pointer-events:none}
+.cb-dialogo{position:absolute;left:50%;top:50%;z-index:7;width:960px;transform:translate(-50%,-50%);background:#fff;border:1px solid #7a7a7a;box-shadow:0 30px 80px rgba(0,0,0,.45);font-family:'Segoe UI',sans-serif;color:#1b1b1b}
+.cb-dialogo .cb-tit{padding:16px 24px;font-size:24px;border-bottom:1px solid #e5e5e5}
+.cb-dialogo .cb-cuerpo{padding:34px 40px 30px;font-size:34px;line-height:1.35}
+.cb-dialogo .cb-cuerpo b{display:block;margin-bottom:14px;font-size:40px;font-weight:400;color:#0a3e8a}
+.cb-dialogo .cb-op{display:block;margin:16px 0 0;padding:16px 26px;border:1px solid transparent;font-size:30px;color:#0a3e8a}
+.cb-dialogo .cb-op.sel{background:#e5f1fb;border-color:#0078d7}
+#caida .bs-cebo{font-size:34px;margin-top:30px;font-weight:300;opacity:.9}

@@ -1,0 +1,6 @@
+FOTOS DE LA PRESENTACIÓN
+Desde el 24/10/2026 todas las fotos salen de ESTA.pptx y ya están en la carpeta img/
+(dejavu, medusa, clones, nevera, mandela-a/b, drogada, quipitos, lilipink, anne, lisa).
+Ya no hace falta poner nada en esta carpeta.
+
+Para cambiar una foto, reemplaza el archivo en img/ con el mismo nombre.
