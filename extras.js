@@ -154,9 +154,9 @@ const MENUS = {
         { t: 'Despedir', fn: () => despedirNpc() }
     ],
     gato: () => [
-        { t: 'Acariciar', fn: (x, y) => reaccion(x, y, '😾 Agata te ignora') },
+        { t: 'Acariciar', fn: (x, y) => reaccion(x, y, '😾 Agatha te ignora') },
         { t: 'Preguntar qué ve', fn: (x, y) => { S.glitch({ dur: 220, micro: true }); reaccion(x, y, '01001000 01001111 01001100 01000001', 2600); } },
-        { t: 'Odiar a Gigi', fn: (x, y) => { bufido(); reaccion(x, y, '😾 Odio a Gigi. Mucho.', 2600); logro('gigi', 'Enemiga jurada', 'Agata odia a Gigi', '😾'); } },
+        { t: 'Odiar a Gigi', fn: (x, y) => { bufido(); reaccion(x, y, '😾 Odio a Gigi. Mucho.', 2600); logro('gigi', 'Enemiga jurada', 'Agatha odia a Gigi', '😾'); } },
         { t: 'Mearle la almohada a Tomás', fn: (x, y) => { meada(); reaccion(x, y, '💦 Almohada de Tomás: arruinada', 2800); logro('tomas', 'Venganza felina', 'Tomás tendrá que lavar la almohada', '💦'); } },
         { t: 'Darle comida', fn: (x, y) => { S.sonido.kaching(); reaccion(x, y, '+10 Hambre · ahora la dueña es ella'); } }
     ],
