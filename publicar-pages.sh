@@ -18,7 +18,7 @@ if [ -z "$TOKEN" ]; then echo "No encontré la credencial de GitHub en git"; exi
 CODIGO=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $TOKEN" "$API/repos/$USUARIO/$REPO")
 if [ "$CODIGO" = "404" ]; then
   curl -s -o /dev/null -w "Repo creado: %{http_code}\n" -H "Authorization: token $TOKEN" -H "Accept: application/vnd.github+json" \
-    "$API/user/repos" -d "{\"name\":\"$REPO\",\"description\":\"¿Vivimos en una simulación? Presentación web estilo Los Sims\",\"private\":false,\"has_wiki\":false,\"homepage\":\"https://srjaniot.github.io/$REPO/\"}"
+    "$API/user/repos" -d "{\"name\":\"$REPO\",\"description\":\"Vivimos en una simulacion - presentacion web estilo Los Sims\",\"private\":false,\"has_wiki\":false,\"homepage\":\"https://srjaniot.github.io/$REPO/\"}"
 else
   echo "El repo ya existe ($CODIGO)"
 fi
